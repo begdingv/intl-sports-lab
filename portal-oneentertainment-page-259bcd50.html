@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>壹号娱乐 · 知识库入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fceecc 0%, #f7d9b0 40%, #f0c79a 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            line-height: 1.6;
+            color: #3a2e24;
+        }
+        .page-wrapper {
+            max-width: 1120px;
+            width: 100%;
+        }
+        /* 主体卡片容器 — 目录感 */
+        .knowledge-card {
+            background: rgba(255, 250, 240, 0.88);
+            backdrop-filter: blur(2px);
+            border-radius: 48px 48px 32px 32px;
+            box-shadow: 0 12px 28px rgba(100, 60, 30, 0.12), 0 4px 12px rgba(0,0,0,0.04);
+            padding: 2.8rem 2.8rem 3.2rem;
+            border: 1px solid rgba(255, 235, 210, 0.6);
+            transition: box-shadow 0.2s;
+        }
+        @media (max-width: 600px) {
+            .knowledge-card {
+                padding: 2rem 1.2rem 2.4rem;
+                border-radius: 32px;
+            }
+            body {
+                padding: 1rem 0.8rem;
+            }
+        }
+
+        /* 目录感：网格布局 */
+        .grid-directory {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem 1.5rem;
+            margin: 1.8rem 0 2.4rem;
+        }
+        .dir-item {
+            background: #fffbf4;
+            border-radius: 24px;
+            padding: 1.2rem 1rem;
+            box-shadow: 0 2px 6px rgba(160, 110, 60, 0.08);
+            border: 1px solid #efe3d1;
+            transition: background 0.15s, transform 0.1s;
+        }
+        .dir-item:hover {
+            background: #fffcf7;
+            transform: translateY(-2px);
+        }
+        .dir-item strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #7d5f44;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.01em;
+        }
+        .dir-item span {
+            font-size: 0.9rem;
+            color: #65503b;
+        }
+
+        /* 标题区域 */
+        .hero-title {
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #8b694a, #b58763);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.2rem;
+            line-height: 1.2;
+        }
+        .hero-sub {
+            color: #6d5440;
+            font-size: 1.05rem;
+            border-left: 4px solid #d8b48c;
+            padding-left: 1rem;
+            margin: 0.4rem 0 1rem 0;
+            font-weight: 400;
+        }
+
+        /* 说明区 / 提示区等用卡片内分组 */
+        .section-block {
+            margin-top: 2.2rem;
+        }
+        .section-block h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #5b432f;
+            display: inline-block;
+            border-bottom: 2px solid #e3caaf;
+            padding-bottom: 0.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem 1.8rem;
+        }
+        @media (max-width: 640px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        .info-item {
+            background: #fffcf4;
+            padding: 1.2rem 1.2rem 1rem;
+            border-radius: 24px;
+            border: 1px solid #eadbc8;
+        }
+        .info-item .label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #86694e;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .tip-area {
+            background: #eedbc8;
+            background: linear-gradient(120deg, #eddccb, #e7cfb5);
+            border-radius: 28px;
+            padding: 1.2rem 1.6rem;
+            margin: 1.8rem 0 1.2rem;
+            color: #3d2e1f;
+            font-size: 0.95rem;
+            box-shadow: inset 0 1px 4px rgba(255, 215, 170, 0.3);
+        }
+        .tip-area .tip-title {
+            font-weight: 600;
+            display: inline-block;
+            background: #8b6b4c;
+            color: #f5ede4;
+            padding: 0.1rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            margin-right: 0.6rem;
+        }
+
+        .faq-mini {
+            margin-top: 1.4rem;
+            border-top: 1px dashed #dac3ae;
+            padding-top: 1.2rem;
+        }
+        .faq-mini details {
+            margin-bottom: 0.5rem;
+            background: #fcf5ec;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #e5d3be;
+            transition: 0.1s;
+        }
+        .faq-mini details[open] {
+            background: #fefaf5;
+            border-color: #d3b69a;
+        }
+        .faq-mini summary {
+            font-weight: 500;
+            color: #5f4532;
+            cursor: pointer;
+            padding: 0.3rem 0;
+        }
+
+        .related-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            margin: 1.6rem 0 0.4rem;
+            align-items: baseline;
+        }
+        .related-links a {
+            background: #fff1e3;
+            padding: 0.3rem 1.4rem;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            color: #6e4f37;
+            text-decoration: none;
+            border: 1px solid #dcc6af;
+            transition: background 0.12s, box-shadow 0.1s;
+            font-weight: 450;
+        }
+        .related-links a:hover {
+            background: #f7e4d1;
+            border-color: #b99274;
+            box-shadow: 0 2px 6px rgba(130, 80, 40, 0.08);
+        }
+
+        .sentence-link {
+            color: #8a6544;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #bc9a7b;
+        }
+        .sentence-link:hover {
+            border-bottom: 1px solid #7c5b3b;
+            color: #6f4d30;
+        }
+
+        .footer-note {
+            margin-top: 2.6rem;
+            font-size: 0.85rem;
+            color: #7f6956;
+            text-align: center;
+            padding-top: 1.4rem;
+            border-top: 1px solid #e2cfba;
+        }
+
+        .label-icon {
+            font-size: 1.2rem;
+            margin-right: 0.3rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="knowledge-card">
+            <!-- hero 区域 -->
+            <div class="hero-title">📖 壹号娱乐 · 说明站</div>
+            <div class="hero-sub">一个用来快速了解「壹号娱乐」定位、功能与背景的信息页面。</div>
+
+            <!-- 目录感模块 grid  -->
+            <div class="grid-directory">
+                <div class="dir-item">
+                    <strong>🔍 平台定位</strong>
+                    <span>数字娱乐内容聚合 · 轻量级入口</span>
+                </div>
+                <div class="dir-item">
+                    <strong>🧩 主要场景</strong>
+                    <span>信息浏览 / 功能引导 / 资源索引</span>
+                </div>
+                <div class="dir-item">
+                    <strong>📌 使用方式</strong>
+                    <span>直接访问主站，或从此页了解概况</span>
+                </div>
+                <div class="dir-item">
+                    <strong>🌐 持续更新</strong>
+                    <span>内容方向与模块可能随版本调整</span>
+                </div>
+            </div>
+
+            <!-- 说明区 -->
+            <div class="section-block">
+                <h3>📋 说明</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">📎 网站性质</span>
+                        <span>「壹号娱乐」是一个提供特定数字内容与功能访问的线上站点，面向有对应需求的用户。页面结构倾向于目录式引导，降低认知负担。</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">🧭 内容倾向</span>
+                        <span>涵盖娱乐、资讯、工具类板块，具体模块以实际页面为准。建议通过首页导航或搜索定位感兴趣的部分。</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">⚙️ 技术背景</span>
+                        <span>页面采用轻量化设计，兼容主流浏览器。不依赖复杂框架，打开即用，适合快速访问与浏览。</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">🔐 温馨提示</span>
+                        <span>请自行判断内容适用性，并留意使用环境。本站不会主动索取隐私信息，也请警惕仿冒页面。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提示区 强调信息 -->
+            <div class="tip-area">
+                <span class="tip-title">💡 提示</span>
+                如果你想直接访问主服务，可通过链接前往 <a href="https://portal-oneentertainment.com" class="sentence-link">壹号娱乐</a> 的首页，那里通常有更完整的导航与功能入口。本页仅作为辅助说明。
+            </div>
+
+            <!-- 相关信息区 / FAQ 摘要 -->
+            <div class="section-block faq-mini">
+                <h3>❓ 常见疑问摘要</h3>
+                <details>
+                    <summary>「壹号娱乐」主要用来做什么？</summary>
+                    <p style="margin: 0.3rem 0 0.2rem; font-size: 0.9rem; color: #4c3b2b;">它是面向特定用户群的线上内容平台，提供娱乐、信息与便捷功能。具体模块以官方页面实际展示为准。</p>
+                </details>
+                <details>
+                    <summary>有没有 App 或必须注册？</summary>
+                    <p style="margin: 0.3rem 0 0.2rem; font-size: 0.9rem; color: #4c3b2b;">目前主要通过 Web 访问，部分功能可能需要账号登录，以实际页面指引为准。建议从 <a href="https://portal-oneentertainment.com" class="sentence-link">壹号娱乐</a> 官网确认最新情况。</p>
+                </details>
+                <details>
+                    <summary>这个介绍页和官网是什么关系？</summary>
+                    <p style="margin: 0.3rem 0 0.2rem; font-size: 0.9rem; color: #4c3b2b;">本页为非官方的辅助说明页，目的是帮你更快理解网站背景。主站信息更全面，可点击站内链接直接前往。</p>
+                </details>
+            </div>
+
+            <!-- 相关链接区（非强制入口，展示辅助） -->
+            <div class="related-links">
+                <span style="color:#6b4f39; font-weight: 450;">🔗 相关信息</span>
+                <a href="#">常见问题索引</a>
+                <a href="#">内容分类总览</a>
+                <a href="#">使用环境说明</a>
+                <span style="color:#8d725a; font-size:0.9rem; margin-left:0.2rem;">（仅供参考）</span>
+            </div>
+
+            <!-- 脚注 (可包含再次自然链接) -->
+            <div class="footer-note">
+                <span>你可以随时回到 <a href="https://portal-oneentertainment.com" class="sentence-link">壹号娱乐</a> 查看最新内容。本说明页仅作为知识库式入口，不替代原站功能。</span><br>
+                <span style="opacity:0.6; font-size:0.75rem;">&copy; 信息摘要 · 内容方向保持变化</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
